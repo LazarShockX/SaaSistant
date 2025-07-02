@@ -5,8 +5,9 @@ import { OctagonAlertIcon } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { FaGithub, FaGoogle } from "react-icons/fa";
+import Link from "next/link";
 
 import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/auth-client";
@@ -14,7 +15,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Alert, AlertTitle } from "@/components/ui/alert";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { set } from "date-fns";
 
 const formSchema = z.object({
     name: z.string().min(1, { message: "Name is required" }),
@@ -29,6 +29,7 @@ const formSchema = z.object({
 
 export const SignUpView = () => {
     const router = useRouter();
+
     const [pending, setPending] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -51,11 +52,33 @@ export const SignUpView = () => {
                 name: data.name,
                 email: data.email,
                 password: data.password,
+                callbackURL: "/",
             },
             {
                 onSuccess: () => {
                     setPending(false);
                     router.push("/");
+                },
+                onError: ({ error }) => {
+                    setPending(false);
+                    setError(error.message);
+                }
+            }
+        )
+    }
+
+    const onSocial = (provider: "github" | "google") => {
+        setError(null);
+        setPending(true);
+
+        authClient.signIn.social(
+            {
+                provider: provider,
+                callbackURL: "/",
+            },
+            {
+                onSuccess: () => {
+                    setPending(false);
                 },
                 onError: ({ error }) => {
                     setPending(false);
@@ -149,11 +172,15 @@ export const SignUpView = () => {
                                     </span>
                                 </div>
                                 <div className="grid grid-cols-2 gap-4">
-                                    <Button disabled={pending} variant="outline" type="button" className="w-full cursor-pointer">
-                                        Google
+                                    <Button 
+                                        onClick={() => onSocial("google")}
+                                        disabled={pending} variant="outline" type="button" className="w-full cursor-pointer">
+                                        <FaGoogle />
                                     </Button>
-                                    <Button disabled={pending} variant="outline" type="button" className="w-full cursor-pointer">
-                                        GitHub
+                                    <Button 
+                                        onClick={() => onSocial("github")}
+                                        disabled={pending} variant="outline" type="button" className="w-full cursor-pointer">
+                                        <FaGithub />
                                     </Button>
                                 </div>
                                 <div className="text-center text-sm">
