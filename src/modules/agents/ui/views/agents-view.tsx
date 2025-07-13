@@ -6,13 +6,13 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { useTRPC } from "@/trpc/client";
 import { LoadingState } from "@/components/loading-state";
 import { DataTable } from "@/components/data-table";
+import { DataPagination } from "@/components/data-pagination";
 import { EmptyState } from "@/components/empty-state";
 import { ErrorState } from "@/components/error-state";
 
 import { columns } from "../components/columns";
 
 import { useAgentsFilters } from "../../hooks/use-agents-filters";
-import { DataPagination } from "../components/data-pagination";
 
 
 export const AgentsView = () => {
