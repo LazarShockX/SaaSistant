@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 
 interface Props {
@@ -7,6 +8,24 @@ interface Props {
 }
 
 export const DataPagination = ({ page, totalPages, onPageChange }: Props) => {
+    // // Prevent accessing out of bounds pages
+    // useEffect(() => {
+    //     const isPageInvalid = page < 1 || (totalPages > 0 && page > totalPages);
+    //     if (isPageInvalid) {
+    //         onPageChange(1);
+    //     }
+    // }, [page, totalPages, onPageChange]);
+
+    // const handlePageChange = (newPage: number) => {
+    //     // Validate page bounds - redirect to page 1 if invalid
+    //     const isPageInvalid = newPage < 1 || (totalPages > 0 && newPage > totalPages);
+    //     if (isPageInvalid) {
+    //         onPageChange(1);
+    //     } else {
+    //         onPageChange(newPage);
+    //     }
+    // };
+
     return (
         <div className="flex items-center justify-between">
             <div className="flex-1 text-sm text-muted-foreground">
