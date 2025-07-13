@@ -63,7 +63,7 @@ export const AgentForm = ({ onSuccess, onCancel, initialValues }: AgentFormProps
     const form = useForm<z.infer<typeof agentsInsertSchema>>({
         resolver: zodResolver(agentsInsertSchema),
         defaultValues: {
-            name: initialValues?.name ??"",
+            name: initialValues?.name ?? "",
             instructions: initialValues?.instructions ?? "",
         }
     })
