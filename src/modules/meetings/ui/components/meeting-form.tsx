@@ -62,7 +62,7 @@ export const MeetingForm = ({ onSuccess, onCancel, initialValues }: MeetingFormP
 
                 if (initialValues?.id) {
                     await queryClient.invalidateQueries(
-                        trpc.meetings.getOne.queryOptions({ id: initialValues.id })
+                        trpc.meetings.getOne.queryOptions({ id: initialValues.id }) // Refetch itself
                     );
                 }
                 onSuccess?.();
