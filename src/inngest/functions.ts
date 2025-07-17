@@ -50,7 +50,7 @@ export const meetingsProcessing = inngest.createFunction(
     })
 
     const transcriptWithSpeakers = await step.run("add-speakers", async () => {
-        const speakerIds = [...new Set(transcript.map((item) => item.speaker_id))];
+        const speakerIds = [...new Set(transcript.map((item) => item.speaker_id))]; // Get all speaker IDs from transcript
 
         const userSpeakers = await db
             .select()
@@ -72,10 +72,10 @@ export const meetingsProcessing = inngest.createFunction(
             }))
         )
 
-        const speakers = [...userSpeakers, ...agentSpeakers];
+        const speakers = [...userSpeakers, ...agentSpeakers]; // Combine user and agent speakers
 
         return transcript.map((item) => {
-            const speaker = speakers.find((speaker) => speaker.id === item.speaker_id);
+            const speaker = speakers.find((speaker) => speaker.id === item.speaker_id); // For each transcript item, find the corresponding speaker (agent or you), i.e. "agent123" === "agent123" will return the agent object
 
             if (!speaker) {
                 return {
@@ -89,7 +89,7 @@ export const meetingsProcessing = inngest.createFunction(
             return {
                 ...item,
                 user: {
-                    name: speaker.name,
+                    name: speaker.name, // Also return speaker's (agent or you) name in a user object
                 }
             }
         })
