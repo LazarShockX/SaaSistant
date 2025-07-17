@@ -50,7 +50,7 @@ export const meetingsProcessing = inngest.createFunction(
     })
 
     const transcriptWithSpeakers = await step.run("add-speakers", async () => {
-        const speakerIds = [...new Set(transcript.map((item) => item.speaker_id))]; // Get all speaker IDs from transcript
+        const speakerIds = [...new Set(transcript.map((item) => item.speaker_id))]; // Get both user and agent speaker IDs from transcript
 
         const userSpeakers = await db
             .select()
