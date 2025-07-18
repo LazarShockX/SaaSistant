@@ -58,7 +58,7 @@ export const meetingsProcessing = inngest.createFunction(
             .where(inArray(user.id, speakerIds))
             .then((users) =>
                 users.map((user) => ({
-                    ...user
+                    ...user // Redundant spread, but ensures immutability
                 }))
             )
         
@@ -79,7 +79,7 @@ export const meetingsProcessing = inngest.createFunction(
 
             if (!speaker) {
                 return {
-                    ...item,
+                    ...item, // Return existing item
                     user: {
                         name: "Unknown",
                     }
