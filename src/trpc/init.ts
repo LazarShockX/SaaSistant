@@ -45,7 +45,7 @@ export const premiumProcedure = (entity: "meetings" | "agents") =>
     })
 
     const [userMeetings] = await db
-      .select({ count: count(meetings.id) }) // Object literal
+      .select({ count: count(meetings.id) })
       .from(meetings)
       .where(eq(meetings.userId, ctx.auth.user.id));
 
