@@ -1,3 +1,4 @@
+import { useRouter } from "next/navigation";
 import { z } from "zod";
 import { toast } from "sonner";
 import { useForm } from "react-hook-form";
@@ -22,6 +23,7 @@ interface AgentFormProps {
 }
 
 export const AgentForm = ({ onSuccess, onCancel, initialValues }: AgentFormProps) => {
+    const router = useRouter();
     const trpc = useTRPC();
     const queryClient = useQueryClient();
 
@@ -31,11 +33,18 @@ export const AgentForm = ({ onSuccess, onCancel, initialValues }: AgentFormProps
                 await queryClient.invalidateQueries(
                     trpc.agents.getMany.queryOptions({})
                 );
+                await queryClient.invalidateQueries(
+                    trpc.premium.getFreeUsage.queryOptions()
+                );
 
                 onSuccess?.();
             },
             onError: (error) => {
                 toast.error(error.message);
+
+                if (error.data?.code === "FORBIDDEN") {
+                    router.push("/upgrade");
+                }
             },
         })
     )

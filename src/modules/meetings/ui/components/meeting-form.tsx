@@ -17,6 +17,7 @@ import { meetingsInsertSchema } from "../../schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { NewAgentDialog } from "@/modules/agents/ui/components/new-agent-dialog";
+import { useRouter } from "next/navigation";
 
 interface MeetingFormProps {
     onSuccess?: (id?: string) => void;
@@ -25,6 +26,7 @@ interface MeetingFormProps {
 }
 
 export const MeetingForm = ({ onSuccess, onCancel, initialValues }: MeetingFormProps) => {
+    const router = useRouter();
     const trpc = useTRPC();
     const queryClient = useQueryClient();
 
@@ -44,11 +46,18 @@ export const MeetingForm = ({ onSuccess, onCancel, initialValues }: MeetingFormP
                 await queryClient.invalidateQueries(
                     trpc.meetings.getMany.queryOptions({})
                 );
+                await queryClient.invalidateQueries(
+                    trpc.premium.getFreeUsage.queryOptions()
+                );
 
                 onSuccess?.(data.id);
             },
             onError: (error) => {
                 toast.error(error.message);
+
+                if (error.data?.code === "FORBIDDEN") {
+                    router.push("/upgrade");
+                }
             },
         })
     )
