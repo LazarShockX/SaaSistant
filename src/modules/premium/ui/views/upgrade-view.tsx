@@ -69,12 +69,12 @@ export const UpgradeView = () => {
 
 export const UpgradeViewLoading = () => {
     return (
-        <LoadingState title="Loading Meetings" description="This may take a few seconds" />
+        <LoadingState title="Loading Plans" description="This may take a few seconds" />
     )
 }
 
 export const UpgradeViewError = () => {
     return (
-        <ErrorState title="Error Loading Meetings" description="Please try again later" />
+        <ErrorState title="Error Loading Plans" description="Please try again later" />
     )
 }
