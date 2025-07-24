@@ -38,7 +38,10 @@ const summarizer = createAgent({
 })
 
 export const meetingsProcessing = inngest.createFunction(
-  { id: "meetings/processing" },
+  { 
+    id: "meetings/processing",
+    retries: 0  // Disable retries to prevent getting stuck
+  },
   { event: "meetings/processing" },
   async ({ event, step }) => {
     const response = await step.run("fetch-transcript", async () => {
@@ -95,16 +98,64 @@ export const meetingsProcessing = inngest.createFunction(
         })
     })
 
-    const { output } = await summarizer.run("Summarize the following transcript: " + JSON.stringify(transcriptWithSpeakers));
+    try {
+        const { output } = await summarizer.run("Summarize the following transcript: " + JSON.stringify(transcriptWithSpeakers));
 
-    await step.run("save-summary", async () => {
-        await db
-            .update(meetings)
-            .set({
-                summary: (output[0] as TextMessage).content as string,
-                status: "completed",
+        await step.run("save-summary", async () => {
+            await db
+                .update(meetings)
+                .set({
+                    summary: (output[0] as TextMessage).content as string,
+                    status: "completed",
+                })
+                .where(eq(meetings.id, event.data.meetingId));
+        })
+    } catch (error: unknown) {
+        // Check if it's a 429 (rate limit) error - checking multiple possible formats
+        const errorString = error?.toString() || '';
+        const errorMessage = (error as Error)?.message || '';
+        
+        // Type-safe way to check for error properties
+        const hasStatus = error && typeof error === 'object' && 'status' in error;
+        const hasCode = error && typeof error === 'object' && 'code' in error;
+        const hasStatusCode = error && typeof error === 'object' && 'statusCode' in error;
+        
+        const is429Error = (hasStatus && (error as { status: number }).status === 429) || 
+            (hasCode && (error as { code: number }).code === 429) || 
+            (hasStatusCode && (error as { statusCode: number }).statusCode === 429) ||
+            errorMessage.includes('429') ||
+            errorString.includes('429') ||
+            errorMessage.includes('unsuccessful status code: 429') ||
+            errorString.includes('unsuccessful status code: 429') ||
+            errorMessage.includes('rate limit') ||
+            errorString.includes('rate limit');
+        
+        if (is429Error) {
+            console.log('Detected 429 error, setting meeting to completed');
+            
+            await step.run("save-rate-limited", async () => {
+                await db
+                    .update(meetings)
+                    .set({
+                        summary: "Summary unavailable due to rate limiting. Please try again later.",
+                        status: "completed",
+                    })
+                    .where(eq(meetings.id, event.data.meetingId));
             })
-            .where(eq(meetings.id, event.data.meetingId));
-    })
+        } else {
+            // For any other error, also complete the meeting to prevent getting stuck
+            console.log('Unknown error type, setting meeting to completed to prevent stuck state');
+            
+            await step.run("save-error", async () => {
+                await db
+                    .update(meetings)
+                    .set({
+                        summary: "Summary unavailable due to an error during processing.",
+                        status: "completed",
+                    })
+                    .where(eq(meetings.id, event.data.meetingId));
+            })
+        }
+    }
   },
 );
