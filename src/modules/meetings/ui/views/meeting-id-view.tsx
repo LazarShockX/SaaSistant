@@ -74,7 +74,7 @@ export const MeetingIdView = ({ meetingId }: Props) => {
             <div className="flex-1 px-4 py-4 md:px-8 flex flex-col gap-y-4">
                 <MeetingIdViewHeader meetingId={meetingId} meetingName={data.name} onEdit={() => setUpdateMeetingDialogOpen(true)} onRemove={handleRemoveMeeting} />
                 {isUpcoming && (
-                    <UpcomingState meetingId={meetingId} onCancelMeeting={() => {}} isCancelling={false} />
+                    <UpcomingState meetingId={meetingId} />
                 )}
                 {isActive && (
                     <ActiveState meetingId={meetingId} />
