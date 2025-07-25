@@ -71,6 +71,12 @@ DATABASE_URL="your_postgresql_connection_string"
 BETTER_AUTH_SECRET="your_auth_secret"
 BETTER_AUTH_URL="http://localhost:3000"
 
+GITHUB_CLIENT_ID="your_github_client_id"
+GITHUB_CLIENT_SECRET="your_github_client_secret"
+
+GOOGLE_CLIENT_ID="your_google_client_id"
+GOOGLE_CLIENT_SECRET="your_google_client_secret"
+
 # AI
 OPENAI_API_KEY="your_openai_api_key"
 
@@ -80,10 +86,6 @@ STREAM_SECRET="your_stream_secret"
 
 # Subscriptions
 POLAR_ACCESS_TOKEN="your_polar_access_token"
-
-# Webhooks
-INNGEST_SIGNING_KEY="your_inngest_signing_key"
-```
 
 ### Available Scripts
 
