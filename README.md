@@ -55,12 +55,12 @@ An AI-powered video meeting platform that enables users to create and interact w
 
 **AI & Video:**
 - **OpenAI** - AI agent
-- **Stream Video SDK** - Video calling infrastructure
-- **Stream Chat** - Real-time messaging
+- **[Stream Video SDK](https://getstream.io/)** - Video calling infrastructure
+- **[Stream Chat](https://getstream.io/)** - Real-time messaging
 - **Inngest** - Background job processing
 
 **Additional Tools:**
-- **Polar** - Subscription and payment management
+- **[Polar](https://polar.sh/)** - Subscription and payment management
 - **Dicebear** - Avatar generation
 - **React Query** - Data fetching and caching
 
