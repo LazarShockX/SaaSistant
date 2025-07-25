@@ -88,6 +88,7 @@ STREAM_SECRET="your_stream_secret"
 
 # Subscriptions
 POLAR_ACCESS_TOKEN="your_polar_access_token"
+```
 
 ### Available Scripts
 
