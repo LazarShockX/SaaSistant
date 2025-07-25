@@ -2,6 +2,8 @@
 
 An AI-powered video meeting platform that enables users to create and interact with AI agents during video calls. Built with Next.js, TypeScript, and integrated with OpenAI. Check out the app on Vercel: [saasistant.vercel.app](https://saa-sistant.vercel.app)
 
+**Note:** AI features—including real-time agent interaction, summary generation, and AI chat—are unavailable when the associated OpenAI account has insufficient credits. The deployed version on Vercel currently has no credits, so these features are disabled.
+
 ## ✨ Features
 
 ### 🤖 AI Agents
