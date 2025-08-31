@@ -68,7 +68,7 @@ An AI-powered video meeting platform that enables users to create and interact w
 
 ### Environment Variables
 
-Create a `.env.local` file with the following variables:
+Create a `.env` file with the following variables:
 
 ```env
 # Database
