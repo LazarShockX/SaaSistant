@@ -40,26 +40,26 @@ An AI-powered video meeting platform that enables users to create and interact w
 
 ## 🛠️ Tech Stack
 
-**Frontend:**
+### Frontend
 - **Next.js 15** - React framework with App Router
 - **TypeScript** - Type-safe development
 - **Tailwind CSS** - Utility-first styling
 - **Radix UI** - Accessible component primitives
 - **React Hook Form** - Form management with Zod validation
 
-**Backend & Database:**
+### Backend & Database
 - **tRPC** - End-to-end typesafe APIs
 - **Drizzle ORM** - Type-safe database operations
 - **PostgreSQL** - Primary database (via Neon)
 - **Better Auth** - Authentication system
 
-**AI & Video:**
+### AI & Video
 - **OpenAI** - AI agent
 - **[Stream Video SDK](https://getstream.io/)** - Video calling infrastructure
 - **[Stream Chat](https://getstream.io/)** - Real-time messaging
 - **Inngest** - Background job processing
 
-**Additional Tools:**
+### Additional Tools
 - **[Polar](https://polar.sh/)** - Subscription and payment management
 - **Dicebear** - Avatar generation
 - **React Query** - Data fetching and caching
